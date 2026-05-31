@@ -54,8 +54,6 @@ The project uses five target classes:
 
 Urban land-cover classification is challenging because many surface types occur close together and are often mixed within a single Sentinel-2 pixel. In Cardiff, a 20 m pixel may contain buildings, roads, gardens, trees, grass, water edges, bare soil, or shadows. These mixed pixels can make different land-cover classes appear spectrally similar, especially for Urban, Open land / Bare, and Grass and crop.
 
-Cardiff is a useful case study because it contains dense urban areas, suburban housing, parks, woodland, agricultural margins, river corridors, reservoirs, industrial land, docks, and Cardiff Bay within a compact study area. This creates a realistic classification problem where built, green, and water surfaces are closely connected.
-
 The project tackles the problem of whether Sentinel-2 spectral bands, NDVI, and NDBI can distinguish five broad land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop. It also tests whether two different machine-learning approaches produce similar or different interpretations of the same landscape.
 
 This comparison is useful because the two methods answer different questions. **K-means** asks whether pixels naturally group into meaningful spectral clusters without using labels. **Gradient Boosting** asks whether Sentinel-2 features can reproduce a labelled WorldCover-derived class scheme. Comparing the two helps identify which classes are spectrally separable and which remain uncertain in Cardiff’s mixed urban environment.
@@ -69,7 +67,7 @@ The study area is **Cardiff, Wales**, defined using a Cardiff boundary GeoJSON. 
 
 Cardiff is suitable for this project because it contains a strong mixture of built-up land, managed green space, woodland, agricultural edges, rivers, lakes, docks, and coastal water. This creates a realistic AI4EO classification problem where class boundaries are often mixed and uncertain at 20 m resolution.
 
-![Study area](figures/study_area_cardiff.png)
+![Study area](study_area_cardiff.png)
 
 ---
 
