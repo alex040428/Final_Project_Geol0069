@@ -16,7 +16,7 @@ Both models use the same Sentinel-2 feature stack, allowing differences in the f
 2. [Project Motivation and Problem Description](#project-motivation)
 3. [Study Area](#study-area)
 4. [Data Sources and Pre-processing](#data-sources-and-pre-processing)
-5. [Method Overview](#method-overview)
+5. [Method](#method-overview)
    - [K-means Workflow](#k-means-workflow)
    - [Gradient Boosting Workflow](#gradient-boosting-workflow)
 6. [Results and Comparison](#results-and-comparison)
@@ -116,27 +116,33 @@ The WorldCover labels are treated as **reference labels**, not perfect ground tr
 
 ---
 
-## Method Overview
+## Method
 
-Both classification methods use the same Sentinel-2 feature stack. This means that differences between outputs are mainly caused by the modelling approach.
+This project compares two machine-learning approaches for five-class land-cover classification in Cardiff: **K-means clustering** and **Gradient Boosting**. Both methods use the same Sentinel-2 feature stack, consisting of six spectral bands plus NDVI and NDBI. Using identical input features allows the comparison to focus on how the modelling approach affects the final land-cover interpretation.
 
-K-means is used as an unsupervised spectral baseline. It groups pixels according to similarity in the eight-dimensional Sentinel-2 feature space, and the resulting clusters are interpreted using spectral profiles, NDVI, NDBI, SWIR response, visible brightness, and map inspection.
+**K-means** is used as a supervised baseline. It groups valid Sentinel-2 pixels according to spectral similarity without using reference labels. Because the resulting cluster IDs have no automatic land-cover meaning, they are interpreted after clustering using spectral profiles, NDVI, NDBI, SWIR response, visible brightness, and visual map inspection.
 
-Gradient Boosting is used as the supervised classifier. It learns relationships between Sentinel-2 features and WorldCover-derived five-class labels, then predicts a land-cover class for every valid pixel in the Cardiff study area.
+**Gradient Boosting** is used as an unsupervised classifier. It is trained using five-class reference labels derived from ESA WorldCover and then applied to all valid Cardiff pixels. This method tests whether the Sentinel-2 features can reproduce a labelled land-cover scheme.
+
+Together, the two methods allow the project to compare natural spectral groupings with a label-driven classification, helping identify which Cardiff land-cover classes are separable and which remain ambiguous.
+
 
 ---
 
 ## K-means Workflow
 
-K-means clustering is fitted to a standardised sample of valid Sentinel-2 pixels. The final model uses **k = 5** so that the unsupervised output can be interpreted against the same five-class scheme used by the supervised model. Diagnostic plots are included as sensitivity checks rather than as an automatic model-selection rule.
+K-means clustering is used as the supervised baseline in this project. Before clustering, the Sentinel-2 feature values are standardised so that spectral bands and indices contribute more equally to the distance calculation (scikit-learn developers, n.d.). The model is fitted to a random sample of valid pixels to keep the workflow computationally efficient in Google Colab, then applied to all valid pixels in the Cardiff study area.
 
-![K-means workflow](figures/kmeans_workflow_cardiff.png)
+The final model uses **k = 5** to match the five target land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop. This choice supports comparison with the Gradient Boosting output. Elbow and silhouette diagnostics are reported to show cluster behaviour across different values of `k`, but the final value is selected for consistency with the project’s five-class classification scheme rather than chosen automatically.
+
+
+![K-means workflow](kmeans_workflow_cardiff.png)
 
 ### K-means Diagnostics
 
 The elbow and silhouette plots show how clustering behaviour changes across candidate `k` values. The chosen value of `k = 5` is retained because it matches the five target land-cover classes and supports direct comparison with Gradient Boosting.
 
-![K-means diagnostics](figures/kmeans_diagnostics_cardiff.png)
+![K-means diagnostics](kmeans_diagnostics_cardiff.png)
 
 ### K-means Cluster Interpretation
 
@@ -412,7 +418,3 @@ scikit-learn developers. (n.d.). *HistGradientBoostingClassifier*. scikit-learn.
 scikit-learn developers. (n.d.). *KMeans*. scikit-learn. https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
 
 scikit-learn developers. (n.d.). *Silhouette score*. scikit-learn. https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html
-
-scikit-learn developers. (n.d.). *Silhouette score*. scikit-learn. https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html
-
-Zha, Y., Gao, J., & Ni, S. (2003). Use of normalized difference built-up index in automatically mapping urban areas from TM imagery. *International Journal of Remote Sensing, 24*(3), 583–594. https://doi.org/10.1080/01431160304987
