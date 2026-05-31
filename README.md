@@ -79,8 +79,8 @@ The workflow uses **Google Earth Engine** to access and process satellite and re
 |---|---|---|
 | Sentinel-2 Level-2A surface reflectance | `COPERNICUS/S2_SR_HARMONIZED` | Main optical satellite feature source |
 | ESA WorldCover v200 | `ESA/WorldCover/v200` | Reference labels for supervised learning and evaluation |
-| Cardiff boundary | `data/selection.geojson` | Study area mask |
-| Wales district boundary | `data/district_boundary.geojson` | Context map |
+| Cardiff boundary | `selection.geojson` | Study area mask |
+| Wales district boundary | `district_boundary.geojson` | Context map |
 
 The Sentinel-2 feature stack contains six spectral bands and two derived indices:
 
@@ -97,9 +97,9 @@ The Sentinel-2 feature stack contains six spectral bands and two derived indices
 
 A growing-season Sentinel-2 composite is used to strengthen the contrast between vegetation, built-up surfaces, water, and open/bare areas. Cloud-contaminated and invalid pixels are removed before creating the modelling arrays. The analysis is run at a **20 m** working scale to balance spatial detail and Google Colab runtime stability. At this scale, each pixel represents **400 m²**, which is used for mapped area calculations.
 
-![Sentinel-2 RGB composite](figures/cardiff_sentinel2_rgb.png)
+![Sentinel-2 RGB composite](cardiff_sentinel2_rgb.png)
 
-### WorldCover Remapping
+### Reference Label Preparation
 
 The original ESA WorldCover classes are remapped into the five target classes:
 
