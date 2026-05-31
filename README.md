@@ -140,21 +140,23 @@ The final model uses **k = 5** to match the five target land-cover classes: Urba
 
 ### K-means Diagnostics
 
-The elbow and silhouette plots show how clustering behaviour changes across candidate `k` values. The chosen value of `k = 5` is retained because it matches the five target land-cover classes and supports direct comparison with Gradient Boosting.
+The elbow and silhouette diagnostics are used to examine how the K-means clustering structure changes across several candidate k values. The elbow plot shows how within-cluster inertia decreases as more clusters are added, while the silhouette score indicates how clearly separated the clusters are in the Sentinel-2 feature space. These diagnostics help assess whether the chosen number of clusters is reasonable and transparent.
+
+For this project, the final value is fixed at **k = 5** because the research design uses five target land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop. The diagnostics are therefore used as sensitivity checks rather than as an automatic selection rule. This makes the K-means output directly comparable with the supervised Gradient Boosting classification while still showing how alternative cluster numbers behave.
 
 ![K-means diagnostics](kmeans_diagnostics_cardiff.png)
 
 ### K-means Cluster Interpretation
 
-K-means cluster IDs are arbitrary and do not automatically mean Urban, Water, Tree and shrub, or any other class. Therefore, the raw clusters are interpreted using cluster spectral profiles and map inspection.
+K-means produces numerical cluster IDs, but these IDs are arbitrary and have no automatic land-cover meaning. For example, Cluster 0 does not necessarily represent Water or Urban; it simply represents one group of spectrally similar pixels. Therefore, each cluster is interpreted after modelling using its mean spectral profile, including NDVI, NDBI, visible brightness, and SWIR response. The cluster map is also inspected visually against the Sentinel-2 RGB image to decide which land-cover class each cluster most closely represents.
 
-![Raw K-means clusters](figures/kmeans_raw_clusters_cardiff.png)
+![Raw K-means clusters](kmeans_raw_clusters_cardiff.png)
 
-![K-means cluster spectral profiles](figures/kmeans_cluster_profiles_cardiff.png)
+![K-means cluster spectral profiles](kmeans_cluster_profiles_cardiff.png)
 
 The final interpreted K-means output maps Cardiff into the five target classes.
 
-![K-means five-class map](figures/kmeans_five_class_map_cardiff.png)
+![K-means five-class map](kmeans_five_class_map_cardiff.png)
 
 ---
 
@@ -162,11 +164,11 @@ The final interpreted K-means output maps Cardiff into the five target classes.
 
 Gradient Boosting uses the same Sentinel-2 feature stack but is trained using the remapped WorldCover reference labels. A train/test split is used to evaluate model agreement with the reference labels before the model is applied to all valid pixels.
 
-![Gradient Boosting workflow](figures/gradient_boosting_workflow_cardiff.png)
+![Gradient Boosting workflow](gradient_boosting_workflow_cardiff.png)
 
-The Gradient Boosting map should be interpreted as a supervised, label-driven classification. It is not independent field validation because the reference labels come from WorldCover.
+The Gradient Boosting output should be interpreted as a supervised, label-driven classification. The model learns from ESA WorldCover-derived labels and then applies this learned relationship to all valid Sentinel-2 pixels in Cardiff. Therefore, its accuracy measures agreement with the WorldCover reference layer rather than independent ground-truth accuracy. This distinction is important because WorldCover may contain errors or simplified class boundaries, especially in mixed urban areas, narrow water features, small parks, and transition zones.
 
-![Gradient Boosting five-class map](figures/gradient_boosting_five_class_map_cardiff.png)
+![Gradient Boosting five-class map](gradient_boosting_five_class_map_cardiff.png)
 
 ---
 
@@ -183,7 +185,7 @@ Because K-means is unsupervised, the raw cluster IDs were not evaluated directly
 | K-means matched | 0.34 | 0.06 |
 | Gradient Boosting | 0.31 | 0.08 |
 
-![Model accuracy comparison](figures/model_accuracy_comparison_cardiff.png)
+![Model accuracy comparison](model_accuracy_comparison_cardiff.png)
 
 The results show that neither method achieved strong agreement with the WorldCover-derived labels. K-means matched had slightly higher overall accuracy, while Gradient Boosting had slightly higher Cohen's kappa. This suggests that Sentinel-2 features capture some broad land-cover structure, but the five-class scheme remains difficult to separate in a mixed urban environment.
 
@@ -191,7 +193,7 @@ The results show that neither method achieved strong agreement with the WorldCov
 
 The Gradient Boosting confusion matrix shows that the model struggles to separate several classes, particularly Urban, Tree and shrub, Open land / Bare, and Grass and crop. Water is more distinct in the test set, but the final full-map prediction still needs careful interpretation because small water bodies, shadowed vegetation, and dark urban surfaces can overlap spectrally.
 
-![Gradient Boosting confusion matrix](figures/gradient_boosting_confusion_matrix_cardiff.png)
+![Gradient Boosting confusion matrix](gradient_boosting_confusion_matrix_cardiff.png)
 
 ### Mapped Class Area
 
@@ -205,21 +207,21 @@ The mapped area comparison shows that the two models assign very different propo
 | Open land / Bare | 37.3 | 24.9 | -12.4 |
 | Grass and crop | 28.8 | 23.5 | -5.3 |
 
-![Class area comparison](figures/class_area_comparison_cardiff.png)
+![Class area comparison](class_area_comparison_cardiff.png)
 
 These differences show that the two methods interpret the same Sentinel-2 feature space in different ways. K-means maps much more Open land / Bare and less Urban, while Gradient Boosting maps more Urban because it is guided by WorldCover-derived labels.
 
-![Gradient Boosting mapped area](figures/gradient_boosting_area_chart_cardiff.png)
+![Gradient Boosting mapped area](gradient_boosting_area_chart_cardiff.png)
 
 ### Spatial Agreement
 
 The spatial agreement analysis shows where K-means and Gradient Boosting predict the same class and where they disagree.
 
-![Spatial agreement](figures/model_spatial_agreement_cardiff.png)
+![Spatial agreement](model_spatial_agreement_cardiff.png)
 
-Agreement is low across all classes, especially Water. This reflects the fact that K-means and Gradient Boosting are not interchangeable: K-means follows spectral similarity, while Gradient Boosting follows the reference-label scheme.
+Agreement is limited across the five classes, with Water showing particularly weak overlap between the two outputs. This indicates that K-means and Gradient Boosting are capturing different aspects of the Sentinel-2 data. K-means groups pixels by spectral similarity alone, while Gradient Boosting is guided by the WorldCover-derived reference labels. Therefore, disagreement does not simply mean one model is wrong; it highlights areas where Cardiff’s land-cover classes are spectrally mixed, uncertain, or difficult to separate at 20 m resolution.
 
-![Class-specific agreement](figures/class_specific_agreement_cardiff.png)
+![Class-specific agreement](class_specific_agreement_cardiff.png)
 
 ---
 
@@ -239,7 +241,7 @@ However, K-means is not automatically a land-cover classifier. Its class names d
 
 ### Value of Gradient Boosting
 
-Gradient Boosting provides a supervised, label-driven classification. Its advantage is that it produces named classes directly and can learn non-linear relationships between Sentinel-2 features and reference labels.
+Gradient Boosting provides a label-driven classification. Its advantage is that it produces named classes directly and can learn non-linear relationships between Sentinel-2 features and reference labels.
 
 However, the model depends strongly on the quality of WorldCover-derived labels. If the reference labels are noisy, too general, or misaligned with the Sentinel-2 composite, the model can learn uncertain class boundaries. The confusion matrix shows this problem clearly.
 
@@ -248,6 +250,13 @@ However, the model depends strongly on the quality of WorldCover-derived labels.
 The most difficult surfaces are Urban, Open land / Bare, and Grass and crop. Bright roofs, concrete, dry grass, bare soil, car parks, construction areas, and sparsely vegetated land can have similar visible and SWIR reflectance. Residential pixels may also contain buildings, roads, gardens, trees, and shadows within the same 20 m pixel.
 
 This mixed-pixel problem is especially important in Cardiff because dense urban areas, suburban housing, parks, agricultural edges, river corridors, and dockland occur close together.
+
+## Implication and Conclusion
+
+The results show that Sentinel-2 spectral bands, NDVI, and NDBI can identify some broad land-cover patterns in Cardiff, but they are not sufficient to separate all five target classes with high reliability. K-means and Gradient Boosting produced different spatial interpretations, and both showed limited agreement with the WorldCover-derived reference labels. This suggests that Cardiff’s urban environment is spectrally complex, especially where buildings, gardens, roads, trees, grass, bare soil, and shadows occur within the same 20 m pixel.
+
+The main implication is that classical machine-learning methods can provide useful first-pass land-cover maps, but their outputs should be interpreted cautiously in mixed urban areas. Sentinel-2 is effective for broad classification, but additional data such as higher-resolution imagery, multi-season composites, Sentinel-1 radar, or manually labelled validation points would be needed to improve class separation and produce a more reliable Cardiff land-cover product.
+
 
 ### Limitations
 
@@ -282,9 +291,14 @@ The workflow uses CPU-only classical machine learning and no GPU. This helps kee
 | Electricity price | £0.2467/kWh |
 | GPU used | No |
 
-![Environmental cost summary](figures/environmental_cost_summary_cardiff.png)
+![Environmental cost summary](environmental_cost_summary_cardiff.png)
 
-The largest runtime contribution came from Gradient Boosting prediction and mapping, followed by K-means clustering and Google Earth Engine pre-processing. Overall, the direct computational cost of this workflow is very small because it uses moderate-resolution Sentinel-2 data, sampled classical machine learning, and no deep learning.
+The measured workflow runtime was **97.99 seconds** or approximately **1.63 minutes**. Using an assumed active notebook power of **0.060 kW**, this equals an estimated energy use of **0.001633 kWh**. With a carbon intensity of **0.125 kg CO2e/kWh**, the workflow produced approximately **0.2042 g CO2e**, with an estimated electricity cost of **£0.000403**. The largest runtime contribution came from **Gradient Boosting prediction and mapping**, followed by **K-means clustering** and **Google Earth Engine pre-processing**.
+
+The direct computational cost is very small because the project uses moderate-resolution Sentinel-2 imagery, sampled classical machine-learning methods, and no GPU-based deep learning. Environmental cost could be reduced further by avoiding unnecessary notebook re-runs, saving intermediate arrays, limiting repeated Earth Engine requests, reducing diagnostic tests once parameters are chosen, and only generating final figures needed for the report.
+
+This assessment is only an approximate operational estimate. It includes measured notebook runtime but excludes the wider environmental cost of Sentinel-2 satellite construction and launch, Google Earth Engine data storage, cloud infrastructure, internet transfer, and repeated trial-and-error runs during development. The assumed power use, carbon intensity, and electricity price are also estimates, so the final values should be interpreted as indicative rather than exact.
+
 
 ---
 
