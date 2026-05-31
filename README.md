@@ -178,7 +178,7 @@ The results compare model agreement with WorldCover-derived labels, mapped class
 
 ### Accuracy Comparison
 
-Because K-means is unsupervised, the raw cluster IDs were not evaluated directly. Instead, the clusters were matched to the five WorldCover-derived reference classes before calculating agreement metrics. This avoids treating arbitrary cluster numbers as fixed land-cover labels.
+The raw cluster IDs of k-means were not evaluated directly. Instead, the clusters were matched to the five WorldCover-derived reference classes before calculating agreement metrics. This avoids treating arbitrary cluster numbers as fixed land-cover labels.
 
 | Model | Overall accuracy | Cohen's kappa |
 |---|---:|---:|
