@@ -13,7 +13,7 @@ Both models use the same Sentinel-2 feature stack, allowing differences in the f
 <summary><strong>Table of Contents</strong></summary>
 
 1. [Research Question](#research-question)
-2. [Project Motivation](#project-motivation)
+2. [Project Motivation and Problem Description](#project-motivation)
 3. [Study Area](#study-area)
 4. [Data Sources and Pre-processing](#data-sources-and-pre-processing)
 5. [Method Overview](#method-overview)
@@ -50,16 +50,16 @@ The project uses five target classes:
 
 ---
 
-## Project Motivation
+## Project Motivation and Problem Description
 
-Urban land-cover classification is challenging because many surface types occur close together and can be spectrally mixed within a Sentinel-2 pixel. Cardiff is a useful case study because it contains dense urban fabric, suburban housing, parks, woodland, agricultural margins, river corridors, reservoirs, industrial land, docks, and Cardiff Bay within a compact study area.
+Urban land-cover classification is challenging because many surface types occur close together and are often mixed within a single Sentinel-2 pixel. In Cardiff, a 20 m pixel may contain buildings, roads, gardens, trees, grass, water edges, bare soil, or shadows. These mixed pixels can make different land-cover classes appear spectrally similar, especially for Urban, Open land / Bare, and Grass and crop.
 
-The project is designed to test whether a moderate-resolution Sentinel-2 feature stack can separate these land-cover types, and whether an unsupervised method and a supervised method produce similar or different interpretations of the same landscape.
+Cardiff is a useful case study because it contains dense urban areas, suburban housing, parks, woodland, agricultural margins, river corridors, reservoirs, industrial land, docks, and Cardiff Bay within a compact study area. This creates a realistic classification problem where built, green, and water surfaces are closely connected.
 
-This comparison is useful because the two methods answer different questions:
+The project tackles the problem of whether Sentinel-2 spectral bands, NDVI, and NDBI can distinguish five broad land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop. It also tests whether two different machine-learning approaches produce similar or different interpretations of the same landscape.
 
-- **K-means** asks whether pixels naturally group into spectral clusters without using labels.
-- **Gradient Boosting** asks whether Sentinel-2 features can reproduce a labelled WorldCover-derived class scheme.
+This comparison is useful because the two methods answer different questions. **K-means** asks whether pixels naturally group into meaningful spectral clusters without using labels. **Gradient Boosting** asks whether Sentinel-2 features can reproduce a labelled WorldCover-derived class scheme. Comparing the two helps identify which classes are spectrally separable and which remain uncertain in Cardiff’s mixed urban environment.
+
 
 ---
 
