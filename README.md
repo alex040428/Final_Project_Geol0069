@@ -1,10 +1,13 @@
-# Comparing Unsupervised and Supervised Land-Cover Classification in Cardiff, Wales
+# Evaluating K-means Clustering and Gradient Boosting for Five-Class Land-Cover Mapping in Cardiff Using Sentinel-2 Imagery
 
 ## A Sentinel-2 Case Study using K-means Clustering and Gradient Boosting
 
-This repository presents a GEOL0069 AI4EO land-cover classification project for **Cardiff, Wales**. The project compares an **unsupervised K-means clustering workflow** with a **supervised Gradient Boosting workflow** using a Sentinel-2 Level-2A surface reflectance composite, NDVI, NDBI, and ESA WorldCover-derived reference labels.
+This project presents a GEOL0069 AI4EO project focused on five-class land-cover classification in **Cardiff, Wales**, using Sentinel-2 satellite imagery. It compares two machine-learning approaches: **K-means clustering**, a supervised method that groups pixels by spectral similarity, and **Gradient Boosting**, an unsupervised method trained with ESA WorldCover-derived reference labels.
 
-The project is a **single-area, single-composite classification comparison**, not a multi-year change detection study. Both methods use the same Sentinel-2 feature stack, so differences in the outputs can be interpreted mainly as differences in modelling approach rather than differences in input imagery.
+The analysis uses a Sentinel-2 Level-2A surface reflectance composite, including visible, near-infrared and short-wave infrared bands, together with NDVI and NDBI. These features are used to classify Cardiff into five land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop.
+
+Both models use the same Sentinel-2 feature stack, allowing differences in the final maps to be interpreted mainly as the result of modelling strategy rather than differences in input data. The project evaluates model accuracy, mapped class area, spatial agreement, limitations, and the environmental cost of the workflow.
+
 
 <details open>
 <summary><strong>Table of Contents</strong></summary>
