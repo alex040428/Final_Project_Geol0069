@@ -367,13 +367,13 @@ ee.Authenticate()
 ee.Initialize(project="your-earth-engine-project-id")
 ```
 
-### 3. Place boundary files in the data folder
+### 3. Upload boundary files
 
 The notebook expects:
 
 ```text
-data/selection.geojson
-data/district_boundary.geojson
+selection.geojson
+district_boundary.geojson
 ```
 
 ### 4. Run the notebook
