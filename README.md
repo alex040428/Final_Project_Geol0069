@@ -166,7 +166,7 @@ Gradient Boosting uses the same Sentinel-2 feature stack but is trained using th
 
 ![Gradient Boosting workflow](gradient_boosting_workflow_cardiff.png)
 
-The Gradient Boosting output should be interpreted as a supervised, label-driven classification. The model learns from ESA WorldCover-derived labels and then applies this learned relationship to all valid Sentinel-2 pixels in Cardiff. Therefore, its accuracy measures agreement with the WorldCover reference layer rather than independent ground-truth accuracy. This distinction is important because WorldCover may contain errors or simplified class boundaries, especially in mixed urban areas, narrow water features, small parks, and transition zones.
+The Gradient Boosting output should be interpreted as an unsupervised, label-driven classification. The model learns from ESA WorldCover-derived labels and then applies this learned relationship to all valid Sentinel-2 pixels in Cardiff. Therefore, its accuracy measures agreement with the WorldCover reference layer rather than independent ground-truth accuracy. This distinction is important because WorldCover may contain errors or simplified class boundaries, especially in mixed urban areas, narrow water features, small parks, and transition zones.
 
 ![Gradient Boosting five-class map](gradient_boosting_five_class_map_cardiff.png)
 
