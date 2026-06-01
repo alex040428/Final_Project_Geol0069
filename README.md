@@ -1,7 +1,5 @@
 # Evaluating K-means Clustering and Gradient Boosting for Five-Class Land-Cover Mapping in Cardiff Using Sentinel-2 Imagery
 
-## A Sentinel-2 Case Study using K-means Clustering and Gradient Boosting
-
 This project presents a GEOL0069 AI4EO project focused on five-class land-cover classification in **Cardiff, Wales**, using Sentinel-2 satellite imagery. It compares two machine-learning approaches: **K-means clustering**, a method that groups pixels by spectral similarity, and **Gradient Boosting**, an unsupervised method trained with ESA WorldCover-derived reference labels.
 
 The analysis uses a Sentinel-2 Level-2A surface reflectance composite, including visible, near-infrared and short-wave infrared bands, together with NDVI and NDBI. These features are used to classify Cardiff into five land-cover classes: Urban, Tree and shrub, Water, Open land / Bare, and Grass and crop.
