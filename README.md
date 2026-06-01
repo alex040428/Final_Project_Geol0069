@@ -312,7 +312,7 @@ A short project walk-through video should explain:
 6. The key results: low agreement, strong model disagreement, and class-area differences.
 7. The limitations and environmental cost assessment.
 
-Video link: **add your YouTube or OneDrive link here**
+Video link: **https://youtu.be/mFJJs7mQjGU?si=8pZ9Cg7CitJRlpar**
 
 ---
 
