@@ -302,7 +302,7 @@ This assessment is only an approximate operational estimate. It includes measure
 
 ## Walk-through Video
 
-A short project walk-through video should explain:
+A short project walk-through video explain:
 
 1. The research question and why Cardiff was selected.
 2. The Sentinel-2 and WorldCover data sources.
